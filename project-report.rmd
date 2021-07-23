@@ -53,7 +53,9 @@ Our stakeholders are the people who will directly or indirectly benefit form the
 ## Decision Maker
 Farmers with already established, conventional commercial apple farmer in NW Europe. Farmers are key decision makers because of the Net Present Value (NPV) calculation in the model. This is a variable which is more important to the producers (farmer).
 
-## Input table
+## Feeding our model (Inputs)
+With our input table, we reached out to the farmers to provide us with expert information based on some estimates from their point of view for our input table (minimum value + maximum value) in the case of 1200 chickens, stocked with pullets and one mobile house in a conventional apple orchard. The experts estimates were inputs we believed would be interesting and fantastic to feed our model with. However, responses from the farmers was not forthcoming. That not withstanding, we relied on business case studies for estimates. Again we also made reference to evidence from reports which at the end enabled us to self-estimate of inputs to feed our model.
+
 
 # Conceptual Model
 
