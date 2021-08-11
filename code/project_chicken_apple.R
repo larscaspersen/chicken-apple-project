@@ -66,26 +66,25 @@ Chicken_Apple_Simulation<- function(){
   
   #Costs apple orchard----
   
+  #set the cost to run machine for one hour
+  cost_diesel <- consumption_diesel_hour * diesel_price
+  
+  #cost to harvest the apples = time it takes to harvest * (wage + diesel_costs)
+  cost_harvesting <- vv(yearly_harvesting_hours, var_CV, n=n_years) * (hourly_wage + cost_diesel)
+  
+  #cost to mow the grass
+  cost_mowing <- vv(yearly_mowing_hours, var_CV, n=n_years) * (hourly_wage + cost_diesel)
+  
   #cost to remove the weed from the strip
-  cost_weeding <- round(vv(no_herbicide_application, var_CV = var_CV, n = n_years),digits = 0) * 
-                              ( (machine_cost_spray * orchard_area * cost_herbicide) +
-                                  hourly_wage ) 
+  cost_weeding <- vv(yearly_weeding_hours, var_CV, n=n_years) * (hourly_wage + cost_diesel) + 
+    cost_herbicide * orchard_area * share_application_area
   
-  
-  
-    # vv(yearly_weeding_hours, var_CV, n=n_years) * (hourly_wage + cost_diesel) + 
-    #                   cost_herbicide * orchard_area * share_application_area
-    # 
+
   
   #### Apple Scab -----
   
-  #cost to control for apple scab
-  cost_scabcontrol <- round(vv(no_fungicide_application, var_CV = var_CV, n = n_years),digits = 0) * 
-                          ( (machine_cost_spray * cost_herbicide * orchard_area) + 
-                              hourly_wage )
-    
-    # vv(yearly_scabcontrol_hours, var_CV, n=n_years) * (hourly_wage + cost_diesel) +
-    #                       cost_fungicide * orchard_area * share_application_area
+    vv(yearly_scabcontrol_hours, var_CV, n=n_years) * (hourly_wage + cost_diesel) +
+                          cost_fungicide * orchard_area * share_application_area
   
   
   #event of extraordinary apple scab infestation (chance of 25%, should be a variable)
@@ -106,12 +105,9 @@ Chicken_Apple_Simulation<- function(){
   
   #cost of insect control
   #insects are confused with pheromones, so its a one time application
-  cost_insectcontrol <- round(vv(no_insecticide_application , var_CV = var_CV, n = n_years),digits = 0) * 
-                           ( (machine_cost_spray * cost_herbicide * orchard_area) + 
-                               hourly_wage )
-    
-    # vv(yearly_insectcontrol_hours, var_CV, n=n_years) * (hourly_wage + cost_diesel) +
-    #                         cost_insecticide * orchard_area * share_application_area
+
+    vv(yearly_insectcontrol_hours, var_CV, n=n_years) * (hourly_wage + cost_diesel) +
+                            cost_insecticide * orchard_area * share_application_area
   
   #event of extraordinary insect infestation
   
@@ -124,12 +120,16 @@ Chicken_Apple_Simulation<- function(){
   #yield modifying vector, 1 = 100 % of yield remains, 1-yieldreduction factor in other cases
   yield_reduction <- yield_reduction - (intense_insect_year * vv(yield_reduction_insect, var_CV = var_CV, n = n_years))
   
+  #yearly cost to apply nutrients
+  cost_nutrients <- vv(yearly_fertilization_hours, var_CV, n = n_years) * (hourly_wage + cost_diesel) +
+                    cost_fertilizer * orchard_area * share_application_area
+  
+  
   
   #### Voles ----
   
   #vole control costs
-  cost_vole_control <- vv(no_vole_plough, var_CV, n = n_years) * 
-                        ( hourly_wage + machine_cost_vole ) 
+  cost_vole_control <- vv(yearly_vole_control_hours, var_CV, n = n_years) * hourly_wage
 
   #draw which in years occures high vole damage
   intense_vole_year <- chance_event(chance_intense_vole_damage, n = n_years)
@@ -149,17 +149,22 @@ Chicken_Apple_Simulation<- function(){
   
   
   #Sum up all apple costs costs----
-  Costs_apple_production <-   cost_weeding +
+  Costs_apple_production <-   cost_harvesting + cost_mowing + cost_weeding +
                               cost_insectcontrol + cost_insect_year +
                               cost_scabcontrol + cost_scab_year +
-                              cost_vole_control + cost_replacement_trees
+                              cost_vole_control + cost_nutrients +
+                              cost_replacement_trees
   
   #chicken reduce insect, apple and vole, weed and grass, so we assume that costs linearly decrease
-  Cost_apple_production_modified_by_chicken <-  cost_weeding * vv(reduce_weed, var_CV, n = n_years) + 
-                                                (cost_insectcontrol + cost_insect_year) * vv(reduce_pest, var_CV, n = n_years) +
-                                                (cost_scabcontrol + cost_scab_year) * reduce_apple_scab + 
-                                                (cost_vole_control) * vv(reduce_vole, var_CV, n = n_years) + 
-                                                cost_replacement_trees
+  Cost_apple_production_modified_by_chicken <- cost_harvesting + 
+                                               cost_mowing * vv(reduce_grass, var_CV = var_CV, n = n_years) + 
+                                               cost_weeding * vv(reduce_weed, var_CV = var_CV, n = n_years) + 
+                                               (cost_insectcontrol + cost_insect_year) * vv(reduce_pest, var_CV, n = n_years)+
+                                               (cost_scabcontrol + cost_scab_year) * reduce_apple_scab + 
+                                               (cost_vole_control) * vv(reduce_vole, var_CV, n = n_years) + 
+                                               cost_replacement_trees + cost_nutrients
+                                                
+
     #Revenue apple production----
   
   #vector containing the apple tree population wihtout damage
