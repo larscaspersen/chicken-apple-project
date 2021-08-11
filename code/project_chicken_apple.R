@@ -83,7 +83,7 @@ Chicken_Apple_Simulation<- function(){
   
   #### Apple Scab -----
   
-    vv(yearly_scabcontrol_hours, var_CV, n=n_years) * (hourly_wage + cost_diesel) +
+  cost_scabcontrol <- vv(yearly_scabcontrol_hours, var_CV, n=n_years) * (hourly_wage + cost_diesel) +
                           cost_fungicide * orchard_area * share_application_area
   
   
@@ -106,7 +106,7 @@ Chicken_Apple_Simulation<- function(){
   #cost of insect control
   #insects are confused with pheromones, so its a one time application
 
-    vv(yearly_insectcontrol_hours, var_CV, n=n_years) * (hourly_wage + cost_diesel) +
+  cost_insectcontrol <-  vv(yearly_insectcontrol_hours, var_CV, n=n_years) * (hourly_wage + cost_diesel) +
                             cost_insecticide * orchard_area * share_application_area
   
   #event of extraordinary insect infestation
