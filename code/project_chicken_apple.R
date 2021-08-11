@@ -330,6 +330,7 @@ Chicken_Apple_Simulation<- function(){
   
   #calculate NPV for chicken, apple, chicken+apple 
   
+  NPV_do_chicken <- discount(net_revenue_apple_chicken - Result_pure_apple, discount_rate, calculate_NPV = T)
   NPV_chicken_solo <- discount(net_revenue_chicken, discount_rate, calculate_NPV = TRUE)
   NPV_apple_solo <- discount(Result_pure_apple, discount_rate, calculate_NPV = TRUE)
   NPV_apple_chicken <- discount(net_revenue_apple_chicken, discount_rate, calculate_NPV = TRUE)
@@ -341,7 +342,7 @@ Chicken_Apple_Simulation<- function(){
               cashflow_apple_only = Result_pure_apple,
               NPV_chicken_only = NPV_chicken_solo,
               cashflow_chicken_only = net_revenue_chicken,
-              NPV_do_chicken = NPV_apple_chicken - NPV_apple_solo,
+              NPV_do_chicken = NPV_do_chicken,
               cashflow_do_decision = net_revenue_apple_chicken - Result_pure_apple))
 }
 
@@ -396,9 +397,9 @@ library(scales)
 jpeg(file="pictures/density_synergy.jpeg",
      width=700, height=500)
 ggplot(Chicken_Apple_Simulation$y)+
-  geom_density(aes(x = c(NPV_apple_chicken - NPV_apple_only - NPV_chicken_only), fill = 'synergies'),
+  geom_density(aes(x = c(NPV_apple_chicken - NPV_apple_only - NPV_chicken_only), fill = 'chicken indirect revenue'),
                alpha = 0.4)+
-  geom_density(aes(x = c(NPV_chicken_only), fill = 'chicken direct benefit'),
+  geom_density(aes(x = c(NPV_chicken_only), fill = 'chicken direct revenue'),
                alpha = 0.4)+
   scale_x_continuous(labels = comma)+
   scale_fill_manual(values = c("#009999", "#0000FF"))+
@@ -407,6 +408,8 @@ ggplot(Chicken_Apple_Simulation$y)+
   labs(fill = '')+
   theme_bw()
 dev.off()
+
+sum(Chicken_Apple_Simulation$y$NPV_chicken_only > 0) / n_sim
 
 
 # PLS analysis ----
