@@ -1,13 +1,10 @@
 # Here we calculate costs and benefits of the inclusion of chicken into 
 # conventional apple orchards####
 
-library(decisionSupport)
+devtools::install_github("eikeluedeling/decisionSupport")
 
 # define path of input table and others
 input_table <- "data/data_chicken_apple.csv"
-legend_file <- "data/legend_chicken_apple.csv"
-mc_results_folder <- "data/mc_Results_chicken_apple"
-evpi_results_folder <- "data/evpi_Results_chicken_apple"
 
 # function to create global variables from input table
 make_variables <- function(est,n=1)
@@ -157,11 +154,11 @@ Chicken_Apple_Simulation<- function(){
   
   #chicken reduce insect, apple and vole, weed and grass, so we assume that costs linearly decrease
   Cost_apple_production_modified_by_chicken <- cost_harvesting + 
-                                               cost_mowing * vv(reduce_grass, var_CV = var_CV, n = n_years) + 
-                                               cost_weeding * vv(reduce_weed, var_CV = var_CV, n = n_years) + 
-                                               (cost_insectcontrol + cost_insect_year) * vv(reduce_pest, var_CV, n = n_years)+
-                                               (cost_scabcontrol + cost_scab_year) * reduce_apple_scab + 
-                                               (cost_vole_control) * vv(reduce_vole, var_CV, n = n_years) + 
+                                               cost_mowing * (1-vv(reduce_grass, var_CV = var_CV, n = n_years)) + 
+                                               cost_weeding * (1-vv(reduce_weed, var_CV = var_CV, n = n_years)) + 
+                                               (cost_insectcontrol + cost_insect_year) * (1-vv(reduce_pest, var_CV, n = n_years))+
+                                               (cost_scabcontrol + cost_scab_year) * (1-vv(reduce_apple_scab, var_CV = var_CV, n = n_years)) + 
+                                               (cost_vole_control) * (1-vv(reduce_vole, var_CV, n = n_years)) + 
                                                cost_replacement_trees + cost_nutrients
                                                 
 
@@ -201,7 +198,7 @@ Chicken_Apple_Simulation<- function(){
   
   Result_pure_apple <- Revenue_apple_production - Costs_apple_production
   
-  Result_apple_with_chicken <- Revenue_apple_production + Cost_apple_production_modified_by_chicken
+  Result_apple_with_chicken <- Revenue_apple_production - Cost_apple_production_modified_by_chicken
   
   
   
@@ -371,6 +368,9 @@ decisionSupport::plot_distributions(mcSimulation_object = Chicken_Apple_Simulati
                                     base_size = 11)
 dev.off()
 
+median(Chicken_Apple_Simulation$y$NPV_do_chicken)
+quantile(Chicken_Apple_Simulation$y$NPV_do_chicken, probs = c(0.05, 0.95))
+sum(Chicken_Apple_Simulation$y$NPV_do_chicken >= 0) / n_sim
 
 
 jpeg(file="pictures/density_apple-chicken.jpg",
@@ -385,17 +385,50 @@ decisionSupport::plot_distributions(mcSimulation_object = Chicken_Apple_Simulati
                                     base_size = 11)
 dev.off()
 
-#share of chicken proftiable
-sum(Chicken_Apple_Simulation$y$NPV_do_chicken >= 0) / n_sim
-#--> in every single case the decsision is benefitial. very realistic
+#calculate the indirect revenue as apple-chicken - chicken_only - apple_only
+Chicken_Apple_Simulation$y$NPV_indirect_revenue <- Chicken_Apple_Simulation$y$NPV_apple_chicken - 
+                                                   Chicken_Apple_Simulation$y$NPV_apple_only - 
+                                                   Chicken_Apple_Simulation$y$NPV_chicken_only
 
-library(ggplot2)
-library(scales)
 
-#calculate the synergy
+
+
+
+#calculate the synergy distribution and compare to the direct chicken revenue
+
+jpeg(file="pictures/density_chicken_only.jpeg",
+     width=700, height=500)
+plot_distributions(mcSimulation_object = Chicken_Apple_Simulation, 
+                                    vars = c("NPV_chicken_only"),
+                                    # You can even add more results here
+                                    method = "boxplot_density", 
+                                    x_axis_name = 'Outcome distribution (in €)',
+                                    base_size = 11)
+dev.off()
+
+quantile(Chicken_Apple_Simulation$y$NPV_chicken_only, probs = c(0.05,0.5, 0.95))
+sum(Chicken_Apple_Simulation$y$NPV_chicken_only >= 0) / n_sim
+
+
+
 
 jpeg(file="pictures/density_synergy.jpeg",
      width=700, height=500)
+plot_distributions(mcSimulation_object = Chicken_Apple_Simulation, 
+                   vars = c("NPV_indirect_revenue"),
+                   # You can even add more results here
+                   method = "boxplot_density", 
+                   x_axis_name = 'Outcome distribution (in €)',
+                   base_size = 11)
+dev.off()
+quantile(Chicken_Apple_Simulation$y$NPV_indirect_revenue, probs = c(0.05,0.5, 0.95))
+sum(Chicken_Apple_Simulation$y$NPV_indirect_revenue >= 0) / n_sim
+
+
+
+#tried to rebuild the density plot with ggplot
+library(ggplot2)
+library(scales)
 ggplot(Chicken_Apple_Simulation$y)+
   geom_density(aes(x = c(NPV_apple_chicken - NPV_apple_only - NPV_chicken_only), fill = 'chicken indirect revenue'),
                alpha = 0.4)+
@@ -407,9 +440,7 @@ ggplot(Chicken_Apple_Simulation$y)+
   ylab('Density estimate')+
   labs(fill = '')+
   theme_bw()
-dev.off()
 
-sum(Chicken_Apple_Simulation$y$NPV_chicken_only > 0) / n_sim
 
 
 # PLS analysis ----
@@ -434,49 +465,15 @@ plot_cashflow(mcSimulation_object = Chicken_Apple_Simulation, cashflow_var_name 
 dev.off()
 
 
+# EVPI ----
 
-
-
-
-
-plot_cashflow(mcSimulation_object = Chicken_Apple_Simulation, cashflow_var_name = "cashflow_chicken_only")
-
-
-Chicken_Apple_Simulation$y[c('NPV_apple_chicken','NPV_apple_only','NPV_chicken_only')]
 
 # Here we can plot each or many EVPI results
-mcSimulation_table <- data.frame(Chicken_Apple_Simulation$x, Chicken_Apple_Simulation$y[c('NPV_apple_chicken','NPV_apple_only','NPV_chicken_only')])
+mcSimulation_table <- data.frame(Chicken_Apple_Simulation$x, Chicken_Apple_Simulation$y[c('NPV_do_chicken')])
 
-evpi <- multi_EVPI(mc = mcSimulation_table, first_out_var = "NPV_apple_chicken")
-plot_evpi(evpi, decision_vars = ("NPV_apple_chicken"))
+evpi <- multi_EVPI(mc = mcSimulation_table, first_out_var = "NPV_do_chicken")
 
-mcSimulation_table <- data.frame(mcSimulation_results$x, mcSimulation_results$y[1:3])
-
-evpi <- multi_EVPI(mc = mcSimulation_table, first_out_var = "Interv_NPV")
-
-
-compound_figure(mcSimulation_object = Chicken_Apple_Simulation, input_table = NULL,
-                plsrResults = pls_result, EVPIresults = evpi,
-                decision_var_name = "NPV_ch",
-                cashflow_var_name = "Cashflow", base_size = 11)
-# Click on zoom to see the big picture
-
-# if we need the data for nicer graphs, we can export it with the "write.csv" command
-write.csv(Chicken_Apple_Simulation$y, "Chicken_Apple_SimulationY.csv", row.names = FALSE)
-write.csv(Chicken_Apple_Simulation$x, "Chicken_Apple_SimulationX.csv", row.names = FALSE)
-
-Chicken_Apple_Simulation <- list(x = read.csv("Chicken_Apple_SimulationX.csv"),
-                                 y = read.csv("Chicken_Apple_SimulationY.csv"))
-class(Chicken_Apple_Simulation) <- cbind("Chicken_Apple_Simulation", class(Chicken_Apple_Simulation))
-write.csv(Chicken_Apple_Simulation, "Chicken_Apple_Simulation.csv", row.names = FALSE)
-
-# Write VIP results
-library(chillR)
-VIP_scores <- VIP(pls_result)
-VIP_coefficient <- pls_result$coefficients 
-
-VIP_NPV <- cbind(VIP_scores, VIP_coefficient)
-write.csv(VIP_NPV, "VIP_NPV", row.names = FALSE)
-
-# Write EVPI results
-write.csv(evpi$NPV, "EVPI_NPV.csv", row.names = FALSE)
+jpeg(file="pictures/evpi_decision_do.jpeg",
+     width=700, height=500)
+plot_evpi(evpi, decision_vars = ("NPV_do_chicken"))
+dev.off()
