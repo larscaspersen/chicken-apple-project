@@ -82,9 +82,8 @@ At the end of the model, revenues of the apple subsystem are subtracted from the
 
 # Model Outcome
 
-*Disclaimer: 3 days before the deadline a major bug in the code was noticed, which caused some of the model output we were baffled by. Unfortunately we spent already days coming up with explanations why the model Being the diligent students we are, we re-wrote the complete results and discussion on short notice. However, it felt like a crime to trash the before-written parts. If you are ever short on texts where students are desperately trying to make sense out of their weird data, then you know now where to look. *
+*Disclaimer: 3 days before the deadline a major bug in the code was noticed, which caused some of the model output we were baffled by. Unfortunately we spent already days coming up with explanations why the model Being the diligent students we are, we re-wrote the complete results and discussion on short notice. However, it felt like a crime to trash the before-written parts. If you are ever short on texts where students are desperately trying to make sense out of their weird data, then please look [here](http://htmlpreview.github.io/?https://github.com/larscaspersen/chicken-apple-project/blob/main/old_results.html).*
 
-\
 The model was run using a Monte-Carlo simulation with 10,000 repetitions. For each iteration, a set of input variables was drawn out of the ranges in the input table. Using the drawn variable values the NVP of the pure apple system (`NPV_apple_only`) and the apple-chicken system (`NPV_apple_chicken`) were calculated (Figure 2). As can be seen, the overlap of the two distributions was large and it is difficult to tell which one is more far to the right. Both distributions appear to peak at around 7,500,000€.
 \
 
