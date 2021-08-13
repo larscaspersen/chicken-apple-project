@@ -49,7 +49,7 @@ Court Farms Chickens in United Kingdom (UK), a farm currently keeping all their 
 On the other hand, he expressed his displeasure in the system, he mentioned that, it difficult to install fencing because of the trees and roots. Again trunks of trees needs to be protected from hens. He iterated that fallen fruit is fine to be eaten by the birds but they have to monitor the amount as too much will make them ill so it has to be manually collected each morning and also becomes difficult to harvest the trees with the birds, coops and fencing now in the way.
 He further mentioned that, plum stones when eaten by turkeys and chicken can induce cyanide poisoning. 
 
-The Human Resource (HR) and Recruitment Director of AC Gotham and Son farms in the UK pointed out that, chicken in apple orchards is a system that they are unfortunately, not willing to consider. According to him, there are the practical implications of protecting the chickens from natural predators such as foxes, however, the consideration of what they would do with all the eggs laid across the 3000 acres of orchards they have.
+The Human Resource (HR) and Recruitment Director of AC Gotham and Son farms in the UK pointed out that, chicken in apple orchards is a system that they are unfortunately, not willing to consider. According to him, there are the practical implications of protecting the chickens from natural predators such as foxes, however, the consideration of what they would do with all the eggs laid across the 3,000 acres of orchards they have.
 
 
 ## Input Table
@@ -84,24 +84,27 @@ At the end of the model, revenues of the apple subsystem are subtracted from the
 
 *Disclaimer: 3 days before the deadline a major bug in the code was noticed, which caused some of the model output we were baffled by. Unfortunately we spent already days coming up with explanations why the model Being the diligent students we are, we re-wrote the complete results and discussion on short notice. However, it felt like a crime to trash the before-written parts. If you are ever short on texts where students are desperately trying to make sense out of their weird data, then you know now where to look. *
 
-The model was run using a Monte-Carlo simulation with 10,000 repetitions. For each iteration, a set of input variables was drawn out of the ranges in the input table. Using the drawn variable values the NVP of the pure apple system (`NPV_apple_only`) and the apple-chicken system (`NPV_apple_chicken`) were calculated (Figure 2). As can be seen, the overlap of the two distributions was large and it is difficult to tell which one is more far to the right. Both distributions appear to peak at around 7,500,00€.  
+\
+The model was run using a Monte-Carlo simulation with 10,000 repetitions. For each iteration, a set of input variables was drawn out of the ranges in the input table. Using the drawn variable values the NVP of the pure apple system (`NPV_apple_only`) and the apple-chicken system (`NPV_apple_chicken`) were calculated (Figure 2). As can be seen, the overlap of the two distributions was large and it is difficult to tell which one is more far to the right. Both distributions appear to peak at around 7,500,000€.
+\
 
 ```{r,echo = FALSE,fig.align='center', fig.cap="Figure 2: Outcome of the Monte-Carlo Simulation (n = 10,000) showing in Net Present Value of pure apple system (NPV_apple_only) and apple-chicken combined system (NPV_apple_chicken)"}
 knitr::include_graphics('pictures/density_apple-chicken.jpg')
 
 ```
 
+\
 To answer the question whether apple farmer should invest in free-range chicken on their orchard, we subtracted the two NPV distributions to get the change in NPV if the decision (to include chicken) is done (NPV decision) (Figure 3). The median of the NPV of the decision is at 66,640€. In 61.35% of the model runs a NPV greater than 0€ was found. The 90% confidence interval of model outcome lies between -324,530€ (5% quantile) and 485,205€ (95% quantile).
+\
 
 ```{r,echo = FALSE,fig.align='center',fig.cap="Figure 3: Outcome of Monte-Carlo-Simulation (n = 10,000) showing the decision to include chicken to apple system (NPV_apple_chicken - NPV_apple_only)"}
 knitr::include_graphics('pictures/old_density_decision_do.jpeg')
 
 ```
 
-
-
+\
 In the following we wanted to investigate how direct and indirect revenues from keeping chicken contributed to the model outcome. Under direct revenues we understand the benefit of selling eggs and meat minus the immediate costs (housing, fodder, labor). The indirect revenues are the synergies (reduced apple scab, harmful insects, voles, grass and weed) minus the trade-offs (not included in the model so far). Because the density estimate varied strongly among direct and indirect revenues we split the figure into two (Figure 4). Median direct chicken revenue (Figure 4a) were 54,812€ with a 90% confidence interval ranging from -336,903€ (5% quantile) to 472,944€ (95% quantile). Roughly 59% of the direct chicken revenue NPV was greater than 0€. The indirect revenue (Figure 4b) had a median of 11,628€ and a 90% confidence interval between 5,954€ (5% quantile) and 20,114€ (95% quantile). As no trade-offs values were subtracted, the NPV of the indirect revenue were strictly positive. The density of the indirect revenues at the distribution peak was roughly five times higher at the peak than the density of the direct chicken revenues.
-
+\
 
 
 ```{r,echo = FALSE,fig.align='center',fig.cap="a ) Direct chicken revenue"}
@@ -117,26 +120,28 @@ knitr::include_graphics('pictures/placeholder.jpg')
 
 ```
 
-
+\
 The cashflow of the decision to include chicken to the orchard shows a slight increase in values going from the first to the following years plateauing there after (Figure 5). Values at the plateau range from approximately -15,000e (5% quantile) to roughly 29,000€ (95% quantile) with a median of about 5,000€.
 *Note: actually the investigated time span is 20 years, but even after installing the `decisionSupport` with `devtools::install_github("eikeluedeling/decisionSupport")` the cashflow figure still showed only the first 10 years.* 
-
+\
 
 ```{r,echo = FALSE,fig.align='center', fig.cap="Figure 5: Cashflow of the decision to include chicken into an existing apple orchard"}
 knitr::include_graphics('pictures/old_cashflow_decision.jpeg')
 
 ```
 
+\
 In the next step, the variables contribution to the NPV decision was calculated using the Projection to Latent Structures or also called Partial Least Square (PLS) method (Figure 6). Variables with positive contribution are shown in green/blue and with negative contribution in red. Variables with a Variable Importance in Projection (VIP) value greater than one include: egg_price, hourly_wage and feed_price. The VIP score of egg_price is roughly four times higher then of the next highest variable.
-
+\
 
 ```{r,echo = FALSE,fig.align='center',fig.cap="Figure 6: Result of the Projection to latent Structures (PLS) analysis on the decision to include chicken to the apple orchard. Bars denote the Variable Importance in the Projection (VIP). Green bars shows variables with positive and red bars variables with negative impact on the NPV"}
 knitr::include_graphics('pictures/pls_decision.jpeg')
 
 ```
 
+\
 The expected value of information (EVPI) was calculated for the decision (Figure 7). For the variable egg_price the EVPI is just shy of 60,000€ and for the variable hourly_wage around 5,000€. For the other variables the EVPI was too low to be shown in the Figure.
-
+\
 
 ```{r,echo = FALSE,fig.align='center',fig.cap="Figure 7: Expected value of information (EVPI) of the variables for the decision to include chicken to an apple orchard"}
 knitr::include_graphics('pictures/evpi_decision_do.jpeg')
@@ -148,13 +153,13 @@ knitr::include_graphics('pictures/evpi_decision_do.jpeg')
 
 When consulting the net present value of including chicken to a commercial apple orchard (Figure 3) it appears that in most cases including chicken to an already existing apple orchard is beneficial, as in more than 60% of the cases the decision maker is better off when doing so. However, it appears that there is a great deal of insecurity, as the range of possible values for the decisions NPV is large. Judging from the outcomes of PLS (Figure 5) the contribution of the direct revenues of keeping chicken is more important than the indirect ones, as none of the variables relating to the synergies happen to have  a VIP larger than 1, let alone to be displayed in the figure at all. This is also reflected in the distribution of direct and indirect revenues (Figure 4). The most important variable to invest future effort in researching appears to be the egg_price with a EVPI of roughly 60,000€. This means that knowing the (hypothetically) exact price of eggs is worth 60,000€ before making the decision whether or not to include the chicken to the orchard. This underlines the importance of marketing and knowing how to distribute the produce before making the decision to invest. \
 So does or projects outcome suggests that investing in chicken is a good strategy for commercial apple growers? That is another story. For once, the model outcome might be too rosy, as no trade-offs between apple and chicken subsystem are implemented. Possible trade-offs include more management costs for field operations (especially spraying) and the chicken harming the trees resulting in either a higher tree-mortality or reduced the yields. By not including those aspects we essentially set the variables value to a certain zero. In the lights of the model outcome it became obvious that the synergies are not balanced but when writing the code we had reasons to not include them. Regarding the spraying we read reports stating that there were no additional management costs [@alpers2015bericht]. The farmer stated that if sprayed in the evening when the chicken are within the coop, no further costs arise for taking care of the chicken. And concerning the damage on trees, the point was mostly raised for situation in which a chicken farmer decides to introduce young apple trees to the chicken range [@timmermans2016quality], so the opposite to our situation. Younger trees might be more vulnerable because especially the fine roots are susceptible to damage. But since we assumed a case of an already established orchard, we decided to ignore it for now. However, if a decision should be made on the basis of the projects outcome, we would suggest to strengthen the efforts to include trade-offs in the model to have a more rounded picture.\
-Before noticing a major bug in the code, the PLS outcomes were dominated by variables relating to the synergies between apple and chicken subsystems. In the debugged version, however, none of the variables appear to matter in the PLS or EVPI analysis. But this does not necessarily mean, that the synergies are neglectable. For once, the variables were mostly approximated by our group memebers, because the data coverage is low and the results are ambiguous. Consulting experts on the chosen ranges and even more importantly on the implementation of the synergies (and trade-offs) might be necessary. 
+Before noticing a major bug in the code, the PLS outcomes were dominated by variables relating to the synergies between apple and chicken subsystems. In the debugged version, however, none of the variables appear to matter in the PLS or EVPI analysis. But this does not necessarily mean, that the synergies are negligible. For once, the variables were mostly approximated by our group members, because the data coverage is low and the results are ambiguous. Consulting experts on the chosen ranges and even more importantly on the implementation of the synergies (and trade-offs) might be necessary. 
+Another improvable aspect of our model is the estimation of working hours and costs of the field operations. We compared our estimations of working hours of mowing and spraying with a standard apple orchard management plan [@KTBL_tool] and noticed that the mowing is overestimated and and the spraying is underestimated. A conventional apple orchard receives through out the year 13 applications of fungicide, five cases of insecticide application, four combined applications of insecticide and fungicide, and two herbicide application events. Mowing usually takes one to two treatments. Both spraying and mowing took a similar amount of time in the standard apple management plan. In our input table we estimated roughly twice the time spent on spraying than on mowing, instead of 1:24 as in the standard management plan [@KTBL_tool]. Furthermore, the share of insect control to fungus control should be not 1:1 as in our input table but rather 15:7. This demonstrates that the assumptions on field operations are improvable. Having improved assumptions with the help of experts or using standard management guides could improve the estimations for control costs. The fungus and insect control costs might have been underestimated in the current model. This might explain the current negligible role of synergies in the current model.\
+Another aspect which should be considered when reading this report, is that a farmer usually does not only face a decision of invest not invest but rather a decision between several competing investment options. Even though the farmer might be better off in most cases when introducing free ranging chicken to the orchard, there might be other investment options which are more desirable for the farmer. When comparing the NPV of pure apple and apple combined with chicken the overlap was strong (Figure 2). Assuming the NPV of pure apple is sensible, it appears that even though the farmer might be better off in most cases following the decision (Figure 3), but the investment appears to hardly impact the total NPV. If the NVP is the only decision criterion there might be better investment options closer tied to the main business of a commercial apple farmer like investing in irrigation infrastructure, selective sprayers or other testing other varieties.
 
-possible further topics:
-- the amount and costs of field operations are unrealistic. For example the amount of time and money spent on mowing appears to be overestimated but the spraying to be underestimated in the input table when comparing to a 'typical' year in the KTBL spreadsheet tool. 
-- implementation of synergies is maybe too optimistic, gradual decrease, less incidence = less control cost? say that relevant even if not in PLS / EVPI because synergies push positive results of pure chicken to apple chicken from 59% to 61%, so in 200 of the 100,000 cases it decided whether the decision is beneficial or not. 
-- another aspect which cannot be covered by the decision analysis is, that in reality the farmer doesn't compare wether an investment makes him better off, but compares several options for investment against each other. It appears that the additionally gained median NPV is rather low compared to the strong investments and maybe more importantly changes in the management. Maybe the farmer prefers another investment (lets say another variety, irrigation infrastructure) which strengtehn their main business inestead of diversifying their operations. 
+# Conclusion
 
+The here carried out Decision Analysis on the question whether a commercial apple farmer should invest in free-raning chicken can be answered with a yes. In roughly 60% of the cases the NPV is positive, so the farmer is better off with the decision compared to doing nothing. Most important variables shaping the decisions NPV are the egg price, the wage of the labor and the chicken feed price. The secondary / indirect benefits of keeping chicken are evident, but are outweighet by the direct revenues. Knowing more about the to be realized egg price before investing is worth up to 60,000€, so more effort should be carried out to determine this variable and re-run the analysis. 
 
 
 # References
