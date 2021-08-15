@@ -3,8 +3,13 @@ title: "Chicken in Apple Project"
 author: "Zoe Heuschkel, Lars Caspersen and Miracle Obeng"
 date: "15/08/2021"
 output:
-  html_document:
-    css: styles.css
+        bookdown::html_document2:
+                toc: true
+                toc_float: true
+                number_sections: true
+                number_figures: true
+                tof: true
+                css: styles.css
 bibliography: references.bib
 fig_caption: yes
 ---
@@ -39,10 +44,10 @@ As can be seen, deciding whether to include chicken to an already existing apple
 Should a commercial conventional apple farmer, located in North Rhine-Westphalia, Germany, include free-ranging egg-laying chicken to his orchard?
 
 
-## Decision Maker
+# Decision Maker
 Farmers with already established, conventional commercial apple farmer in North Rhine-Westphalia, Germany. Farmers are key decision makers because of the Net Present Value (NPV) calculation in the model. This is a variable which is more important to the producers (farmer).
 
-## Interview with Farmers
+# Interview with Farmers
 Pursuant to our project, we reached out to conventional apple and chicken farmers on our decision to include poultry in apple orchards. We explained to them a particular advantage of our decision model as it allows expert knowledge to be included in the calculations and uncertainties (such as pest suppression) to be explicitly based on expert assessments instead of lengthy measurements. 
 
 Court Farms Chickens in United Kingdom (UK), a farm currently keeping all their birds in apple, cherry and plum orchards rather than in fields. In an interview with the Farm Manager, he mentioned some of the few reasons they are actively practicing the system. According him, the land is cheaper, the trees provide natural cover and shelter which enables the birds display much more natural behavior and are happier. The roots in the ground provide stability and drainage in the winter and which helps prevent the land turning into a mud bath is an environmental benefit that the system provides, he said.\
@@ -52,7 +57,7 @@ He further mentioned that, plum stones when eaten by turkeys and chicken can ind
 The Human Resource (HR) and Recruitment Director of AC Gotham and Son farms in the UK pointed out that, chicken in apple orchards is a system that they are unfortunately, not willing to consider. According to him, there are the practical implications of protecting the chickens from natural predators such as foxes, however, the consideration of what they would do with all the eggs laid across the 3,000 acres of orchards they have.
 
 
-## Input Table
+# Input Table
 
 An important step of the Decision Analysis is the creation of the input table. It can be fed with the help of calibrated experts but also using other sources like (scientific) reports or own estimations. Variable values are supplied as lower and upper ranges covering the 90% confidence interval of the distribution of the variable. Therefore, the lower estimate marks the 5%-quantile and the 95% quantile bound. Aside from practitioners already engaged in an apple-chicken (or any other kind of fowl combined with a temperate fruit tree), also estimates of other experts like scientists are helpful when constructing the input table. However, in our case we were not able to utilize this source of information effectively. The outreach to experts was rather unstructured and responses came rather late. So instead we focused mainly on reports and own estimations to construct the input table. We heavily relied on a business example of free-range chicken which can be found in @alpers2015bericht (p. 16). Since the variable values were reported not in ranges, we estimated the upper and lower range. The mentioned example covered most of the direct cost and benefits variables related to chicken. \
 Variables relating to the apple system and more importantly to the synergies of the apple and chicken system were mostly estimated by ourselves. A reason for this is because information in report about the synergies were a) scarce and b) because the synergies were implemented quite late in the project phase. (add sources in the input table) \
